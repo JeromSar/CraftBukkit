@@ -291,13 +291,15 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
         return getHandle().activeContainer.getBukkitView();
     }
 
-    public void openSign(Sign sign) {
+    public void openSign(Sign sign, boolean editable) {
         TileEntitySign tileEntity = ((CraftSign)sign).sign;
         EntityHuman handle = this.getHandle();
         handle.a(tileEntity);
-        // Mark it as editable so the ensuing sign update packet will be accepted
-        tileEntity.a(handle);
-        tileEntity.isEditable = true;
+        if(editable) {
+            // Mark it as editable so the ensuing sign update packet will be accepted
+            tileEntity.a(handle);
+            tileEntity.isEditable = true;
+        }
     }
 
     public void openInventory(InventoryView inventory) {
