@@ -12,6 +12,7 @@ import net.minecraft.server.TileEntityBrewingStand;
 import net.minecraft.server.TileEntityDispenser;
 import net.minecraft.server.TileEntityFurnace;
 import net.minecraft.server.TileEntityHopper;
+import net.minecraft.server.TileEntitySign;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,6 +24,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.block.CraftSign;
 import org.bukkit.craftbukkit.event.CraftEventFactory;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
@@ -286,6 +289,12 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
             getHandle().activeContainer.checkReachable = false;
         }
         return getHandle().activeContainer.getBukkitView();
+    }
+
+    public void openSign(Sign sign) {
+        TileEntitySign tileEntity = ((CraftSign)sign).sign;
+        EntityHuman handle = this.getHandle();
+        handle.a(tileEntity);
     }
 
     public void openInventory(InventoryView inventory) {
