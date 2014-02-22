@@ -1539,13 +1539,17 @@ public class PlayerConnection implements PacketPlayInListener {
         if (worldserver.isLoaded(packetplayinupdatesign.c(), packetplayinupdatesign.d(), packetplayinupdatesign.e())) {
             TileEntity tileentity = worldserver.getTileEntity(packetplayinupdatesign.c(), packetplayinupdatesign.d(), packetplayinupdatesign.e());
 
+            boolean wasBadUpdate = false; // CraftBukkit - track whether this sign change is legal
             if (tileentity instanceof TileEntitySign) {
                 TileEntitySign tileentitysign = (TileEntitySign) tileentity;
 
                 if (!tileentitysign.a() || tileentitysign.b() != this.player) {
                     this.minecraftServer.warning("Player " + this.player.getName() + " just tried to change non-editable sign");
-                    this.sendPacket(new PacketPlayOutUpdateSign(packetplayinupdatesign.c(), packetplayinupdatesign.d(), packetplayinupdatesign.e(), tileentitysign.lines)); // CraftBukkit
-                    return;
+                    // CraftBukkit start - keep going any so we can trigger an event, but record that it was non-editable.
+                    //this.sendPacket(new PacketPlayOutUpdateSign(packetplayinupdatesign.c(), packetplayinupdatesign.d(), packetplayinupdatesign.e(), tileentitysign.lines)); // CraftBukkit
+                    //return;
+                    wasBadUpdate = true;
+                    // CraftBukkit end
                 }
             }
 
@@ -1580,6 +1584,7 @@ public class PlayerConnection implements PacketPlayInListener {
                 // CraftBukkit start
                 Player player = this.server.getPlayer(this.player);
                 SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(j, k, i), this.server.getPlayer(this.player), packetplayinupdatesign.f());
+                event.setCancelled(wasBadUpdate);
                 this.server.getPluginManager().callEvent(event);
 
                 if (!event.isCancelled()) {
