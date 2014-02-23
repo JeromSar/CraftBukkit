@@ -1603,6 +1603,14 @@ public class PlayerConnection implements PacketPlayInListener {
                 tileentitysign1.update();
                 worldserver.notify(j, k, i);
             }
+            // CraftBukkit start - send sign changed even if it's not a sign
+            else {
+                Player player = this.server.getPlayer(this.player);
+                SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(packetplayinupdatesign.c(), packetplayinupdatesign.d(), packetplayinupdatesign.e()), this.server.getPlayer(this.player), packetplayinupdatesign.f());
+                event.setCancelled(true);
+                this.server.getPluginManager().callEvent(event);
+            }
+            // CraftBukkit end
         }
     }
 
