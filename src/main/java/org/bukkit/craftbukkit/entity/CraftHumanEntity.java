@@ -7,12 +7,15 @@ import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityMinecartHopper;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.PacketPlayInCloseWindow;
+import net.minecraft.server.PacketPlayOutOpenSignEditor;
 import net.minecraft.server.PacketPlayOutOpenWindow;
+import net.minecraft.server.TileEntity;
 import net.minecraft.server.TileEntityBrewingStand;
 import net.minecraft.server.TileEntityDispenser;
 import net.minecraft.server.TileEntityFurnace;
 import net.minecraft.server.TileEntityHopper;
 import net.minecraft.server.TileEntitySign;
+import net.minecraft.server.WorldServer;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -301,6 +304,19 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
             tileEntity.a(handle);
             tileEntity.isEditable = true;
         }
+    }
+
+    public void openSign() {
+        if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
+        EntityPlayer handle = (EntityPlayer) this.getHandle();
+        int x = 0, y = 0, z = 0;
+        WorldServer worldserver = handle.server.getWorldServer(handle.dimension);
+        TileEntity tileentity = worldserver.getTileEntity(x, y, z);
+        while(tileentity instanceof TileEntitySign) {
+            x++;
+            tileentity = worldserver.getTileEntity(x, y, z);
+        }
+        handle.playerConnection.sendPacket(new PacketPlayOutOpenSignEditor(x, y, z));
     }
 
     public void openInventory(InventoryView inventory) {
