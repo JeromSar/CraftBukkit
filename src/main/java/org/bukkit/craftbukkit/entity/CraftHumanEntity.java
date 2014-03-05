@@ -296,7 +296,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
 
     public void openSign(Sign sign, boolean editable) {
         if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
-        TileEntitySign tileEntity = ((CraftSign) sign).sign;
+        TileEntitySign tileEntity = ((CraftSign) sign).getHandle();
         EntityPlayer handle = (EntityPlayer) this.getHandle();
         handle.a(tileEntity);
         if (editable) {

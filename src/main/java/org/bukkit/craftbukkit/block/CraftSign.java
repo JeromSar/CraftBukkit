@@ -6,7 +6,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.CraftWorld;
 
 public class CraftSign extends CraftBlockState implements Sign {
-    public final TileEntitySign sign;
+    private final TileEntitySign sign;
     private final String[] lines;
 
     public CraftSign(final Block block) {
@@ -46,5 +46,9 @@ public class CraftSign extends CraftBlockState implements Sign {
         }
 
         return result;
+    }
+
+    public TileEntitySign getHandle() {
+        return sign;
     }
 }
