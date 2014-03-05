@@ -296,10 +296,10 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
 
     public void openSign(Sign sign, boolean editable) {
         if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
-        TileEntitySign tileEntity = ((CraftSign)sign).sign;
+        TileEntitySign tileEntity = ((CraftSign) sign).sign;
         EntityPlayer handle = (EntityPlayer) this.getHandle();
         handle.a(tileEntity);
-        if(editable) {
+        if (editable) {
             // Mark it as editable so the ensuing sign update packet will be accepted
             tileEntity.a(handle);
             tileEntity.isEditable = true;
@@ -312,7 +312,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
         int x = 0, y = 0, z = 0;
         WorldServer worldserver = handle.server.getWorldServer(handle.dimension);
         TileEntity tileentity = worldserver.getTileEntity(x, y, z);
-        while(tileentity instanceof TileEntitySign) {
+        while (tileentity instanceof TileEntitySign) {
             x++;
             tileentity = worldserver.getTileEntity(x, y, z);
         }
