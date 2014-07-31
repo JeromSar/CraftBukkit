@@ -379,7 +379,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
         }
 
         // we clean the player's inventory after the EntityDeathEvent is called so plugins can get the exact state of the inventory.
-        if (!keepInventory) {
+        if (!keepInventory && !event.getKeepInventory()) {
             for (int i = 0; i < this.inventory.items.length; ++i) {
                 this.inventory.items[i] = null;
             }
