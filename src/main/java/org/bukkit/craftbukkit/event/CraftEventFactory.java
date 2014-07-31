@@ -385,12 +385,14 @@ public class CraftEventFactory {
         victim.expToDrop = event.getDroppedExp();
         victim.newExp = event.getNewExp();
 
-        if (!event.getKeepInventory()) {
-            for (org.bukkit.inventory.ItemStack stack : event.getDrops()) {
-               if (stack == null || stack.getType() == Material.AIR) continue;
+        if (event.getKeepInventory()) {
+            return event;
+        }
 
-               world.dropItemNaturally(entity.getLocation(), stack);
-            }
+        for (org.bukkit.inventory.ItemStack stack : event.getDrops()) {
+           if (stack == null || stack.getType() == Material.AIR) continue;
+
+           world.dropItemNaturally(entity.getLocation(), stack);
         }
 
         return event;
