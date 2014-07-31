@@ -44,8 +44,8 @@ public class CraftSign extends CraftBlockState implements Sign {
 
     public TileEntitySign getHandle() {
         return sign;
-    }    
-    
+    }
+
     public static String[] sanitizeLines(String[] lines) {
         String[] astring = new String[4];
 
