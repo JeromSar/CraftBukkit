@@ -39,10 +39,6 @@ public class PerMaterialTest extends AbstractTestingBase {
     public static List<Object[]> data() {
         List<Object[]> list = Lists.newArrayList();
         for (Material material : Material.values()) {
-            if (INVALIDATED_MATERIALS.contains(material)) {
-                continue;
-            }
-
             list.add(new Object[] {material});
         }
         return list;
@@ -73,6 +69,10 @@ public class PerMaterialTest extends AbstractTestingBase {
 
     @Test
     public void maxDurability() {
+        if (INVALIDATED_MATERIALS.contains(material)) {
+            return;
+        }
+
         if (material == Material.AIR) {
             assertThat((int) material.getMaxDurability(), is(0));
         } else if (material.isBlock()){
@@ -83,8 +83,13 @@ public class PerMaterialTest extends AbstractTestingBase {
 
     @Test
     public void maxStackSize() {
+        if (INVALIDATED_MATERIALS.contains(material)) {
+            return;
+        }
+
         final ItemStack bukkit = new ItemStack(material);
         final CraftItemStack craft = CraftItemStack.asCraftCopy(bukkit);
+
         if (material == Material.AIR) {
             final int MAX_AIR_STACK = 0 /* Why can't I hold all of these AIR? */;
             assertThat(material.getMaxStackSize(), is(MAX_AIR_STACK));
