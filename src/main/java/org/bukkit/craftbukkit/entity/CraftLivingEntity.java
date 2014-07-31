@@ -95,7 +95,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     public void setMaxHealth(double amount) {
         Validate.isTrue(amount > 0, "Max health must be greater than 0");
 
-        getHandle().getAttributeInstance(GenericAttributes.a).setValue(amount);
+        getHandle().getAttributeInstance(GenericAttributes.maxHealth).setValue(amount);
 
         if (getHealth() > amount) {
             setHealth(amount);
@@ -280,7 +280,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     }
 
     public void removePotionEffect(PotionEffectType type) {
-        getHandle().m(type.getId()); // Should be removeEffect.
+        getHandle().removeEffect(type.getId());
     }
 
     public Collection<PotionEffect> getActivePotionEffects() {
@@ -348,7 +348,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     }
 
     public boolean hasLineOfSight(Entity other) {
-        return getHandle().o(((CraftEntity) other).getHandle());
+        return getHandle().hasLineOfSight(((CraftEntity) other).getHandle());
     }
 
     public boolean getRemoveWhenFarAway() {
