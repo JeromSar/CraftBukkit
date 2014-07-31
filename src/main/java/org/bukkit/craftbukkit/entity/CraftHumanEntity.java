@@ -294,20 +294,8 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
         return getHandle().activeContainer.getBukkitView();
     }
 
-    public void openSign(Sign sign, boolean editable) {
-        if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
-        TileEntitySign tileEntity = ((CraftSign) sign).getHandle();
-        EntityPlayer handle = (EntityPlayer) this.getHandle();
-        handle.a(tileEntity);
-        if (editable) {
-            // Mark it as editable so the ensuing sign update packet will be accepted
-            tileEntity.a(handle);
-            tileEntity.isEditable = true;
-        }
-    }
-
     public void openSign() {
-        if (!(getHandle() instanceof EntityPlayer)) return; // TODO: NPC support?
+        if (!(getHandle() instanceof EntityPlayer)) return;
         EntityPlayer handle = (EntityPlayer) this.getHandle();
         int x = 0, y = 0, z = 0;
         WorldServer worldserver = handle.server.getWorldServer(handle.dimension);
@@ -317,6 +305,22 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
             tileentity = worldserver.getTileEntity(x, y, z);
         }
         handle.playerConnection.sendPacket(new PacketPlayOutOpenSignEditor(x, y, z));
+    }
+
+    public void openSign(Sign sign) {
+        openSign(sign, true);
+    }
+
+    public void openSign(Sign sign, boolean editable) {
+        if (!(getHandle() instanceof EntityPlayer)) return;
+        TileEntitySign tileEntity = ((CraftSign) sign).getHandle();
+        EntityPlayer handle = (EntityPlayer) this.getHandle();
+        handle.a(tileEntity);
+        if (editable) {
+            // Mark it as editable so the ensuing sign update packet will be accepted
+            tileEntity.a(handle);
+            tileEntity.isEditable = true;
+        }
     }
 
     public void openInventory(InventoryView inventory) {
